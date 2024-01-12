@@ -26,7 +26,10 @@ extension LanguageSelectionView {
             
             for locale in locales {
                 var identifier = ""
-                if localStorage.isFirstLaunch {
+                
+                let previousLocale = localStorage.currentAppLocale
+                let currentLocale = Locale.current.languageCode ?? "en"
+                if previousLocale != currentLocale { // the user changed the language in the application settings
                     let defaultLocalization = Bundle.main.infoDictionary!["CFBundleDevelopmentRegion"] as! String
                     identifier = defaultLocalization
                 } else {
@@ -50,7 +53,9 @@ extension LanguageSelectionView {
             /// So when the app is started again you can detect if the language is switched if you save the previous language some where.
             /// I save current language locally
 
-            if localStorage.isFirstLaunch {
+            let previousLocale = localStorage.currentAppLocale
+            let currentLocale = Locale.current.languageCode ?? "en"
+            if previousLocale != currentLocale { // the user changed the language in the application settings
                 let defaultLocalization = Bundle.main.infoDictionary!["CFBundleDevelopmentRegion"] as! String
                 languagePrefix = defaultLocalization
             } else if !locales.contains(localStorage.currentAppLocale) { // force `en` language
